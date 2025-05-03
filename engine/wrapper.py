@@ -1,6 +1,6 @@
 from utils.model import LanGuideMedSeg
 from monai.losses import DiceCELoss
-from torchmetrics import Accuracy,Dice
+from torchmetrics import Accuracy, Dice
 from torchmetrics.classification import BinaryJaccardIndex
 import torch
 import torch.nn as nn

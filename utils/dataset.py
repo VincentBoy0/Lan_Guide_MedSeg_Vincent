@@ -2,7 +2,7 @@ import json
 import os
 import torch
 import pandas as pd
-from monai.transforms import (AddChanneld, Compose, Lambdad, NormalizeIntensityd,RandCoarseShuffled,RandRotated,RandZoomd,
+from monai.transforms import (EnsureChannelFirstd, Compose, Lambdad, NormalizeIntensityd,RandCoarseShuffled,RandRotated,RandZoomd,
                               Resized, ToTensord, LoadImaged, EnsureChannelFirstd)
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoTokenizer
@@ -12,7 +12,7 @@ class QaTa(Dataset):
     def __init__(self, csv_path=None, root_path=None, tokenizer=None, mode='train',image_size=[224,224]):
 
         super(QaTa, self).__init__()
-
+        print(csv_path)
         self.mode = mode
 
         with open(csv_path, 'r') as f:

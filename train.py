@@ -72,7 +72,7 @@ if __name__ == '__main__':
 
     trainer = pl.Trainer(logger=True,
                         min_epochs=args.min_epochs,max_epochs=args.max_epochs,
-                        accelerator='gpu', 
+                        accelerator='cpu', 
                         devices=args.device,
                         callbacks=[model_ckpt,early_stopping],
                         enable_progress_bar=False,
