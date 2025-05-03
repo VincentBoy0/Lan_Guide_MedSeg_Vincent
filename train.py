@@ -47,7 +47,6 @@ if __name__ == '__main__':
                     image_size=args.image_size,
                     mode='valid')
 
-
     dl_train = DataLoader(ds_train, batch_size=args.train_batch_size, shuffle=True, num_workers=args.train_batch_size)
     dl_valid = DataLoader(ds_valid, batch_size=args.valid_batch_size, shuffle=False, num_workers=args.valid_batch_size)
 
@@ -72,7 +71,7 @@ if __name__ == '__main__':
 
     trainer = pl.Trainer(logger=True,
                         min_epochs=args.min_epochs,max_epochs=args.max_epochs,
-                        accelerator='cpu', 
+                        accelerator='gpu', 
                         devices=args.device,
                         callbacks=[model_ckpt,early_stopping],
                         enable_progress_bar=False,
