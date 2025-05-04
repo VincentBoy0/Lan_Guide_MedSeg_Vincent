@@ -1,39 +1,38 @@
 import os
 import pandas as pd
-import re
 
-def extract_id(filename):
-    """Extract number from filename for matching, e.g. img_001.png -> 001"""
-    match = re.search(r'(\d+)', filename)
-    return match.group(1) if match else None
+# Define paths
+root_path = "./data/QaTa-COV19-v2/Test"
+image_dir = "Images"
 
-def generate_csv(images_dir, labels_dir, output_csv):
-    image_files = os.listdir(images_dir)
-    label_files = os.listdir(labels_dir)
+# Get list of image files
+image_files = os.listdir(os.path.join(root_path, image_dir))
 
-    image_dict = {extract_id(f): f for f in image_files}
-    label_dict = {extract_id(f): f for f in label_files}
+# Define captions based on file names or patterns
+captions = []
+for img in image_files:
+    if "normal" in img.lower():
+        captions.append("A normal chest X-ray with no visible abnormalities.")
+    elif "pneumonia" in img.lower():
+        captions.append("A chest X-ray showing signs of pneumonia.")
+    elif "covid" in img.lower():
+        captions.append("A chest X-ray showing signs of COVID-19 infection.")
+    else:
+        captions.append("A chest X-ray with evidence of lung infection.")
 
-    common_ids = set(image_dict.keys()) & set(label_dict.keys())
+# Ensure the number of captions matches the number of images
+if len(image_files) != len(captions):
+    raise ValueError("Number of images and captions must match.")
 
-    data = []
-    for cid in sorted(common_ids):
-        data.append({
-            'Image': os.path.join(images_dir, image_dict[cid]),
-            'Description': os.path.join(labels_dir, label_dict[cid])
-        })
+# Create a DataFrame
+data = {
+    "Image": [os.path.join(image_dir, img) for img in image_files],
+    "Description": captions
+}
+df = pd.DataFrame(data)
 
-    df = pd.DataFrame(data)
-    df.to_csv(output_csv, index=False)
-    print(f"Saved: {output_csv} with {len(df)} entries")
-
-# Paths
-train_img_dir = './data/QaTa-COV19-v2/Train/Images'
-train_label_dir = './data/QaTa-COV19-v2/Train/Ground-truths'
-test_img_dir = './data/QaTa-COV19-v2/Test/Images'
-test_label_dir = './data/QaTa-COV19-v2/Test/Ground-truths'
-
-# Output
-os.makedirs('./data/QaTa-COV19-v2/prompt', exist_ok=True)
-generate_csv(train_img_dir, train_label_dir, './data/QaTa-COV19-v2/prompt/train.csv')
-generate_csv(test_img_dir, test_label_dir, './data/QaTa-COV19-v2/prompt/test.csv')
+# Save to CSV
+csv_path = "./data/QaTa-COV19-v2/prompt/test.csv"
+print(csv_path)
+df.to_csv(csv_path, index=False)
+print(f"train.csv saved to {csv_path}")

@@ -6,8 +6,8 @@ TRAIN:
 
   image_size: [224,224]
 
-  min_epochs: 20
-  max_epochs: 100
+  min_epochs: 5
+  max_epochs: 10
   patience: 20
 
   device: 1

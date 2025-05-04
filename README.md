@@ -89,3 +89,13 @@ If you find our work useful in your research, please consider citing:
   organization={Springer}
 }
 ```
+
+Run these command in gg colab to run this model:
+1. !git clone https://github.com/VincentBoy0/Lan_Guide_MedSeg_Vincent
+2. !pip install monai
+3. !pip install torchmetrics==1.2.0
+4. !pip install pytorch-lightning==1.9.5
+5. %cd /content/Lan_Guide_MedSeg_Vincent 
+6. !python3 train.py
+7. !python3 evaluate.py
+8. !python3 visualize.py

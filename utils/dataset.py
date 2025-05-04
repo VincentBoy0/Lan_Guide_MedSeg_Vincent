@@ -57,7 +57,7 @@ class QaTa(Dataset):
         #gt = os.path.join(self.root_path, self.gt_dir, self.image_list[idx])
         gt = os.path.join(self.root_path, self.gt_dir, f"mask_{self.image_list[idx]}")
         caption = self.caption_list[idx]
-        print(self.root_path, self.image_dir, self.image_list[idx].replace('mask_', ''))
+        print(self.image_list[idx].replace('mask_', ''), caption)
         if not os.path.exists(image):
             raise FileNotFoundError(f"Image file not found: {image}")
         if not os.path.exists(gt):
