@@ -25,9 +25,7 @@ class QaTa(Dataset):
             raise ValueError("CSV file must contain 'Image' and 'Description' columns.")
 
         # Extract only the file names from the 'Image' column
-        self.image_list = [os.path.basename(img) for img in self.data['Image']]
-        self.image_list = [img.replace("Images\\", "") for img in self.image_list]
-        #self.image_list = list(self.data['Image'])
+        self.image_list = list(self.data['Image'])
         self.caption_list = list(self.data['Description'])
 
         if mode == 'train':
@@ -52,12 +50,15 @@ class QaTa(Dataset):
     def __getitem__(self, idx):
         trans = self.transform(self.image_size)
 
-        image = os.path.join(self.root_path, self.image_dir, self.image_list[idx].replace('mask_', ''))
-        #image = os.path.normpath(self.image_list[idx])  # normalizes slashes
-        #gt = os.path.join(self.root_path, self.gt_dir, self.image_list[idx])
-        gt = os.path.join(self.root_path, self.gt_dir, f"mask_{self.image_list[idx]}")
+        # image = os.path.join(self.root_path, self.image_dir, self.image_list[idx].replace('mask_', ''))
+        # #image = os.path.normpath(self.image_list[idx])  # normalizes slashes
+        # #gt = os.path.join(self.root_path, self.gt_dir, self.image_list[idx])
+        # gt = os.path.join(self.root_path, self.gt_dir, f"mask_{self.image_list[idx]}")
+        # caption = self.caption_list[idx]
+        image = os.path.join(self.root_path,'Images',self.image_list[idx].replace('mask_',''))
+        gt = os.path.join(self.root_path,'Ground-truths', self.image_list[idx])
         caption = self.caption_list[idx]
-        print(self.image_list[idx].replace('mask_', ''), caption)
+
         if not os.path.exists(image):
             raise FileNotFoundError(f"Image file not found: {image}")
         if not os.path.exists(gt):

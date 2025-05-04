@@ -2,37 +2,42 @@ import os
 import pandas as pd
 
 # Define paths
-root_path = "./data/QaTa-COV19-v2/Test"
-image_dir = "Images"
+root_path = "./data/QaTa-COV19-v2/prompt/train_1.txt"
 
-# Get list of image files
-image_files = os.listdir(os.path.join(root_path, image_dir))
+image_list = []
+caption_list = []
 
-# Define captions based on file names or patterns
-captions = []
-for img in image_files:
-    if "normal" in img.lower():
-        captions.append("A normal chest X-ray with no visible abnormalities.")
-    elif "pneumonia" in img.lower():
-        captions.append("A chest X-ray showing signs of pneumonia.")
-    elif "covid" in img.lower():
-        captions.append("A chest X-ray showing signs of COVID-19 infection.")
-    else:
-        captions.append("A chest X-ray with evidence of lung infection.")
+with open(root_path, "r") as file:
+    current_line = ""
+    for line in file:
+        # Check if the line starts with an image path (assumes paths don't contain spaces)
+        if line.startswith("mask_"):
+            # Process the previous line if it exists
+            if current_line:
+                path, description = current_line.split('\t', 1)
+                image_list.append(path.strip())
+                caption_list.append(description.strip())
+            # Start a new line
+            current_line = line.strip()
+        else:
+            # Append the continuation of the description
+            current_line += " " + line.strip()
 
-# Ensure the number of captions matches the number of images
-if len(image_files) != len(captions):
-    raise ValueError("Number of images and captions must match.")
+    # Process the last line
+    if current_line:
+        path, description = current_line.split('\t', 1)
+        image_list.append(path.strip())
+        caption_list.append(description.strip())
 
 # Create a DataFrame
 data = {
-    "Image": [os.path.join(image_dir, img) for img in image_files],
-    "Description": captions
+    "Image": image_list,
+    "Description": caption_list
 }
 df = pd.DataFrame(data)
 
 # Save to CSV
-csv_path = "./data/QaTa-COV19-v2/prompt/test.csv"
+csv_path = "./data/QaTa-COV19-v2/prompt/train.csv"
 print(csv_path)
 df.to_csv(csv_path, index=False)
 print(f"train.csv saved to {csv_path}")
