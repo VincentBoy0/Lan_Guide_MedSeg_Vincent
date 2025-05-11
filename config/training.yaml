@@ -15,6 +15,8 @@ TRAIN:
   model_save_path: ./save_model
   model_save_filename: medseg
 
+  model_save_link: ./save_model/medseg.ckpt
+
 MODEL:
   bert_type: microsoft/BiomedVLP-CXR-BERT-specialized
   vision_type: facebook/convnext-tiny-224
@@ -26,3 +28,6 @@ DATA:
 
   test_csv_path: ./data/QaTa-COV19-v2/prompt/test.csv
   test_root_path: ./data/QaTa-COV19-v2/Test
+
+  val_csv_path: ./data/QaTa-COV19-v2/prompt/val.csv
+  val_root_path: ./data/QaTa-COV19-v2/Val

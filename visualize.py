@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # Load model
     model = LanGuideMedSegWrapper(args)
     #checkpoint = torch.load('./save_model/medseg.ckpt', map_location='cuda')
-    checkpoint = torch.load('./save_model/medseg.ckpt', map_location='cuda', weights_only=False)
+    checkpoint = torch.load(args.model_save_link, map_location='cuda', weights_only=False)
 
     model.load_state_dict(checkpoint["state_dict"])
     model.eval().cuda()
